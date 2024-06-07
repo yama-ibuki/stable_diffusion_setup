@@ -1,0 +1,23 @@
+version: '3'
+services:
+ diffusers:
+  build:
+   context: ../docker/diffusers-pytorch-cuda/
+   dockerfile: Dockerfile
+   args:
+     - USER_NAME=${USER_NAME}
+     - USER_UID=${USER_UID}
+     - USER_GID=${USER_GID}
+  container_name: 'diffusers'
+  working_dir: /workspace
+  command: /bin/bash
+  tty: true
+  volumes:
+   - ..:/workspace:cached
+  deploy:
+   resources:
+    reservations:
+     devices:
+      - driver: nvidia
+        capabilities: [gpu]
+  shm_size: "4gb"
